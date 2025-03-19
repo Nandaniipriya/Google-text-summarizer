@@ -7,39 +7,50 @@ def create_directory_structure():
     base_dir = Path(__file__).parent
 
     # Define the directory structure
-    directories = [
+    python_directories = [
         "src",
         "src/LLMS",
-        "src/graph",
+        "src/graph/main_graph",
+        "src/graph/sub_graph",
         "src/nodes",
         "src/state",
         "src/tools",
+        "src/prompt",
         "src/UI",
-        "src/UI/streamlitUI",
         "src/vectorstore",
+        "src/Utils"
+    ]
+    
+    other_directories = [
         ".github/workflows"
     ]
 
-    # Create directories and __init__.py files
-    for dir_path in directories:
+    # Create directories and __init__.py files for Python directories
+    for dir_path in python_directories:
         full_path = base_dir / dir_path
         full_path.mkdir(parents=True, exist_ok=True)
         
-        # Create __init__.py in each directory
+        # Create __init__.py in each Python directory
         init_file = full_path / "__init__.py"
         init_file.touch()
+    
+    # Create other directories without __init__.py files
+    for dir_path in other_directories:
+        full_path = base_dir / dir_path
+        full_path.mkdir(parents=True, exist_ok=True)
 
     # Create root level files
     root_files = {
         "app.py": "",
-        "requirements.txt": """langchain
-langgraph
-langchain_community
-langchain_core
+        "requirements.txt": """rank_bm25
+rank-llm==0.12.8
+chromadb
+langchain
+langchain-core
+langchain-community
+langchain-openai
 langchain_groq
-langchain_openai
-faiss-cpu
-streamlit"""
+langchain_cohere"""
     }
 
     for filename, content in root_files.items():
